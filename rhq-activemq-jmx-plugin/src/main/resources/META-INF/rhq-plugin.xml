@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<plugin name="ActiveMQ"
+        displayName="ActiveMQ JMX Plugin"
+        version="1.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="urn:xmlns:rhq-plugin"
+        xmlns:c="urn:xmlns:rhq-configuration">
+
+   <depends plugin="JMX" useClasses="true"/>
+
+   <service name="Broker"
+            description="Broker"
+            discovery="org.rhq.plugins.jmx.MBeanResourceDiscoveryComponent"
+            class="org.rhq.plugins.jmx.MBeanResourceComponent">
+
+      <runs-inside>
+         <parent-resource-type name="JMX Server" plugin="JMX"/>
+      </runs-inside>
+
+      <plugin-configuration>
+         <c:simple-property name="objectName" readOnly="true" default="org.apache.activemq:BrokerName=localhost,Type=Broker" />
+      </plugin-configuration>
+
+      <metric property="TotalEnqueueCount"
+              displayName="Total Enqueue Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages that have been sent to the broker"/>
+
+      <metric property="TotalMessageCount"
+              displayName="Total Message Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages unaknowledged on the broker"/>
+
+      <metric property="MemoryPercentUsage"
+              displayName="Meomory Percent Usage"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Percent of memory limit used"/>
+
+      <metric property="StorePercentUsage"
+              displayName="Store Percent Usage"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Percent of store limit used (persistent messages)"/>
+
+      <metric property="TempPercentUsage"
+              displayName="Temp Percent Usage"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Percent of tmp store limit used (non-persistent messages)"/>
+      
+
+   </service>
+
+   <service name="Queue"
+            description="ActiveMQ Queues."
+            discovery="org.rhq.plugins.jmx.MBeanResourceDiscoveryComponent"
+            class="org.rhq.plugins.jmx.MBeanResourceComponent">
+
+      <runs-inside>
+         <parent-resource-type name="JMX Server" plugin="JMX"/>
+      </runs-inside>
+
+      <plugin-configuration>
+	 <c:simple-property name="objectName" readOnly="true" default="org.apache.activemq:BrokerName=localhost,Type=Queue,Destination=%destination%"/>
+         <c:simple-property name="nameTemplate" default="Queue {destination}"/>
+         <c:simple-property name="destination" type="string" description="The queue destination name"/>
+         <c:simple-property name="descriptionTemplate" default="JMX Queue Object"/>
+      </plugin-configuration>
+
+
+      <metric property="QueueSize"
+              displayName="Queue Size"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages in the destination which are yet to be consumed."/>
+
+      <metric property="AverageEnqueueTime"
+              displayName="Average Enqueue Time"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Average time a message has been held this destination."/>
+
+
+      <metric property="DequeueCount"
+              displayName="Dequeue Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages that have been acknowledged and removed from destination."/>
+
+      <metric property="EnqueueCount"
+              displayName="Enqueue Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages that have been sent to the destination."/>
+
+      <metric property="ExpiredCount"
+              displayName="Expired Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="AverageNumber of messages that have been expired."/>
+
+      <metric property="MemoryPercentUsage"
+              displayName="Meomory Percent Usage"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Percent of memory limit used"/>
+
+   </service>
+
+   <service name="Topic"
+            description="ActiveMQ Topics."
+            discovery="org.rhq.plugins.jmx.MBeanResourceDiscoveryComponent"
+            class="org.rhq.plugins.jmx.MBeanResourceComponent">
+
+      <runs-inside>
+         <parent-resource-type name="JMX Server" plugin="JMX"/>
+      </runs-inside>
+
+      <plugin-configuration>
+	 <c:simple-property name="objectName" readOnly="true" default="org.apache.activemq:BrokerName=localhost,Type=Topic,Destination=%destination%"/>
+         <c:simple-property name="nameTemplate" default="Topic {destination}"/>
+	 <c:simple-property name="descriptionTemplate" default="JMX Topic Object"/>
+         <c:simple-property name="destination" type="string" description="The topic destination name"/>
+      </plugin-configuration>
+
+
+       <metric property="QueueSize"
+              displayName="Queue Size"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages in the destination which are yet to be consumed."/>
+
+      <metric property="AverageEnqueueTime"
+              displayName="Average Enqueue Time"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Average time a message has been held this destination."/>
+
+
+      <metric property="DequeueCount"
+              displayName="Dequeue Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages that have been acknowledged and removed from destination."/>
+
+      <metric property="EnqueueCount"
+              displayName="Enqueue Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Number of messages that have been sent to the destination."/>
+
+      <metric property="ExpiredCount"
+              displayName="Expired Count"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="AverageNumber of messages that have been expired."/>
+
+      <metric property="MemoryPercentUsage"
+              displayName="Meomory Percent Usage"
+              defaultOn="true"
+              displayType="summary"
+              defaultInterval="30000"
+              description="Percent of memory limit used"/>
+
+   </service>
+
+</plugin>
