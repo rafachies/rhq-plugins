@@ -33,9 +33,9 @@
 			
 	</serverplugin:plugin-configuration>
 
-	<short-name>XMPP message</short-name>
 	<plugin-class>org.rhq.enterprise.server.plugins.xmpp.sender.XMPPSender</plugin-class>
 
+	<short-name>XMPP message</short-name>
 	
 
 
